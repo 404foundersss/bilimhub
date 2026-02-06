@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BilimHub</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <div id="onboarding" class="onboarding-overlay">
+        <div class="slide active" id="slide1">
+            <img src="https://cdn-icons-png.flaticon.com/512/3426/3426653.png" alt="Study">
+            <h1>Добро пожаловать в BilimHub</h1>
+            <p>Найди идеального репетитора за 2 минуты с помощью ИИ.</p>
+            <button class="btn-primary" onclick="nextSlide(2)">Далее</button>
+        </div>
+        <div class="slide" id="slide2">
+            <img src="https://cdn-icons-png.flaticon.com/512/4712/4712035.png" alt="Choice">
+            <h1>Умный поиск</h1>
+            <p>Выбирай по рейтингу, цене и отзывам. Все учителя проверены.</p>
+            <button class="btn-primary" onclick="nextSlide(3)">Далее</button>
+        </div>
+        <div class="slide" id="slide3">
+            <img src="https://cdn-icons-png.flaticon.com/512/10817/10817478.png" alt="Rocket">
+            <h1>Поехали!</h1>
+            <p>Твое обучение начинается прямо сейчас.</p>
+            <button class="btn-primary" onclick="closeOnboarding()">Начать</button>
+        </div>
+    </div>
+
+    <div id="app" style="display: none;"> <header>
+            <div class="header-top">
+                <h2>BilimHub 🎓</h2>
+                <div class="user-badge" id="user-badge">Гость</div>
+            </div>
+            
+            <div class="filters-scroll">
+                <button class="filter-btn active" onclick="filterTeachers('Все', this)">Все</button>
+                <button class="filter-btn" onclick="filterTeachers('Математика', this)">Математика</button>
+                <button class="filter-btn" onclick="filterTeachers('Английский', this)">Английский</button>
+                <button class="filter-btn" onclick="filterTeachers('Физика', this)">Физика</button>
+                <button class="filter-btn" onclick="filterTeachers('Химия', this)">Химия</button>
+                <button class="filter-btn" onclick="filterTeachers('Биология', this)">Биология</button>
+                <button class="filter-btn" onclick="filterTeachers('История', this)">История</button>
+                <button class="filter-btn" onclick="filterTeachers('Информатика', this)">Информатика</button>
+            </div>
+        </header>
+
+        <main id="teachers-grid" class="grid"></main>
+
+        <div class="fab-container" onclick="toggleChat()">
+            <div class="fab-icon">🤖</div>
+        </div>
+
+        <div id="chat-modal" class="modal-bottom">
+            <div class="modal-header">
+                <h3>AI Помощник</h3>
+                <span class="close-btn" onclick="toggleChat()">&times;</span>
+            </div>
+            <div class="chat-body" id="chat-messages">
+                <div class="message bot">Привет! Я помогу найти учителя. Кого ищем?</div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="ai-input" placeholder="Например: нужен физик для ЕНТ...">
+                <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+
+        <div id="booking-modal" class="modal-center">
+            <div class="modal-content">
+                <h3>Запись на урок</h3>
+                <p id="booking-teacher-name">Учитель</p>
+                <input type="text" id="user-phone" placeholder="Ваш номер (WhatsApp)">
+                <input type="text" id="user-name-input" placeholder="Ваше Имя">
+                <div class="modal-actions">
+                    <button class="btn-secondary" onclick="closeBooking()">Отмена</button>
+                    <button class="btn-primary" onclick="submitBooking()">Отправить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
