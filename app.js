@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000/api'; 
+const API_URL = 'https://bilimhub-backend.onrender.com/api';
 const tg = window.Telegram.WebApp;
 tg.expand();
 
@@ -133,5 +133,6 @@ async function submitBooking() {
         closeBooking();
     } catch (err) { alert("Ошибка отправки."); }
 }
+
 
 checkOnboarding();
