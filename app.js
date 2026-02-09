@@ -1,8 +1,3 @@
-/**
- * BilimHub Core Logic
- * Version: 2.0 (Super Optimized)
- */
-
 const API_URL = 'https://bilimhub-backend.onrender.com/api';
 const tg = window.Telegram.WebApp;
 
@@ -501,3 +496,4 @@ function addChatMessage(role, text) {
     chat.appendChild(div);
     chat.scrollTop = chat.scrollHeight;
 }
+
