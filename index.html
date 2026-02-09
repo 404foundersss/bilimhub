@@ -2,87 +2,636 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BilimHub</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BilimHub - Платформа репетиторов №1 🚀</title>
+    <script src="https://telegram.org/js/telegram-web-app.js?59"></script>
     <link rel="stylesheet" href="style.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* Стиль кнопки в хедере */
+        .btn-become-tutor {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(118, 75, 162, 0.4);
+            transition: all 0.3s ease;
+            margin-right: 15px;
+            text-decoration: none;
+        }
+
+        .btn-become-tutor:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(118, 75, 162, 0.6);
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+
+        .btn-become-tutor:active {
+            transform: translateY(1px);
+        }
+
+        /* Адаптив для кнопки */
+        @media (max-width: 600px) {
+            .btn-become-tutor .btn-text {
+                display: none;
+            }
+            .btn-become-tutor {
+                padding: 10px;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                justify-content: center;
+            }
+        }
+
+        /* Стили для формы регистрации */
+        .reg-form-container {
+            padding: 10px;
+        }
+        
+        .reg-hero {
+            text-align: center;
+            margin-bottom: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 16px;
+        }
+
+        .reg-hero h3 {
+            margin: 0;
+            background: linear-gradient(45deg, #FFD700, #FF8C00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-color, #333);
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border-radius: 12px;
+            border: 2px solid rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.5);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 38px;
+            font-size: 1.2rem;
+            opacity: 0.7;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .file-upload {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            text-align: center;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(255,255,255,0.3);
+        }
+
+        .file-upload:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .reg-submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(90deg, #11998e, #38ef7d);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-top: 10px;
+        }
+
+        .reg-submit-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(56, 239, 125, 0.4);
+        }
+    </style>
 </head>
 <body>
-
-    <div id="onboarding" class="onboarding-overlay">
-        <div class="slide active" id="slide1">
-            <img src="https://cdn-icons-png.flaticon.com/512/3426/3426653.png" alt="Study">
-            <h1>Добро пожаловать в BilimHub</h1>
-            <p>Найди идеального репетитора за 2 минуты с помощью ИИ.</p>
-            <button class="btn-primary" onclick="nextSlide(2)">Далее</button>
-        </div>
-        <div class="slide" id="slide2">
-            <img src="https://cdn-icons-png.flaticon.com/512/4712/4712035.png" alt="Choice">
-            <h1>Умный поиск</h1>
-            <p>Выбирай по рейтингу, цене и отзывам. Все учителя проверены.</p>
-            <button class="btn-primary" onclick="nextSlide(3)">Далее</button>
-        </div>
-        <div class="slide" id="slide3">
-            <img src="https://cdn-icons-png.flaticon.com/512/10817/10817478.png" alt="Rocket">
-            <h1>Поехали!</h1>
-            <p>Твое обучение начинается прямо сейчас.</p>
-            <button class="btn-primary" onclick="closeOnboarding()">Начать</button>
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loader-content">
+            <div class="loader-logo">🎓</div>
+            <div class="loader-text">Загружаем лучших репетиторов...</div>
+            <div class="loader-bar">
+                <div class="loader-progress"></div>
+            </div>
         </div>
     </div>
 
-    <div id="app" style="display: none;"> <header>
-            <div class="header-top">
-                <h2>BilimHub 🎓</h2>
-                <div class="user-badge" id="user-badge">Гость</div>
+    <div class="onboarding" id="onboarding">
+        <div class="onboarding-bg"></div>
+        <div class="onboarding-content">
+            <div class="onboarding-slide active" data-slide="0">
+                <div class="onboarding-emoji">🎯</div>
+                <h2>Выбери предмет</h2>
+                <p>Более 25 проверенных репетиторов по всем школьным предметам</p>
             </div>
-            
-            <div class="filters-scroll">
-                <button class="filter-btn active" onclick="filterTeachers('Все', this)">Все</button>
-                <button class="filter-btn" onclick="filterTeachers('Математика', this)">Математика</button>
-                <button class="filter-btn" onclick="filterTeachers('Английский', this)">Английский</button>
-                <button class="filter-btn" onclick="filterTeachers('Физика', this)">Физика</button>
-                <button class="filter-btn" onclick="filterTeachers('Химия', this)">Химия</button>
-                <button class="filter-btn" onclick="filterTeachers('Биология', this)">Биология</button>
-                <button class="filter-btn" onclick="filterTeachers('История', this)">История</button>
-                <button class="filter-btn" onclick="filterTeachers('Информатика', this)">Информатика</button>
+            <div class="onboarding-slide" data-slide="1">
+                <div class="onboarding-emoji">⭐</div>
+                <h2>Посмотри профили</h2>
+                <p>Рейтинги, отзывы реальных учеников, опыт - вся информация прозрачна</p>
+            </div>
+            <div class="onboarding-slide" data-slide="2">
+                <div class="onboarding-emoji">🚀</div>
+                <h2>Запишись в 1 клик</h2>
+                <p>Мы свяжем вас с репетитором в течение 1 часа</p>
+            </div>
+            <div class="onboarding-dots">
+                <span class="dot active" data-dot="0"></span>
+                <span class="dot" data-dot="1"></span>
+                <span class="dot" data-dot="2"></span>
+            </div>
+            <button class="btn btn-primary onboarding-btn" id="onboardingNext">
+                <span class="btn-text">Далее</span>
+                <span class="btn-icon">→</span>
+            </button>
+            <button class="onboarding-skip" id="onboardingSkip">Пропустить</button>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <div class="animated-bg">
+            <div class="bg-gradient"></div>
+            <div class="bg-particles"></div>
+        </div>
+
+        <header class="header">
+            <div class="header-content">
+                <div class="header-top">
+                    <div class="logo-section">
+                        <div class="logo">
+                            <span class="logo-icon">🎓</span>
+                            <span class="logo-text">BilimHub</span>
+                        </div>
+                        <div class="beta-badge">BETA</div>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn-become-tutor" id="openRegModalBtn">
+                            <span class="btn-icon">💼</span>
+                            <span class="btn-text">Стать репетитором</span>
+                        </button>
+                        
+                        <button class="icon-btn" id="themeToggle" title="Сменить тему">
+                            <span class="theme-icon">🌙</span>
+                        </button>
+                    </div>
+                </div>
+                <h1 class="header-title">
+                    <span class="title-gradient">Найди своего</span>
+                    <span class="title-highlight">идеального репетитора</span>
+                </h1>
+                <p class="header-subtitle">Проверенные преподаватели • Реальные отзывы • Результаты гарантированы</p>
+                
+                <div class="header-stats-inline">
+                    <div class="stat-inline">
+                        <span class="stat-icon">👥</span>
+                        <span class="stat-value live-counter" id="liveCount">47</span>
+                        <span class="stat-label">онлайн</span>
+                        <span class="pulse-dot"></span>
+                    </div>
+                    <div class="stat-inline">
+                        <span class="stat-icon">✨</span>
+                        <span class="stat-value" id="bookingsToday">23</span>
+                        <span class="stat-label">записей сегодня</span>
+                    </div>
+                </div>
             </div>
         </header>
 
-        <main id="teachers-grid" class="grid"></main>
+        <section class="search-section">
+            <div class="container">
+                <div class="ai-hint">
+                    <span class="ai-hint-icon">🤖</span>
+                    <span class="ai-hint-text">Не знаешь кого выбрать? Спроси нашего AI-помощника!</span>
+                    <button class="ai-hint-btn" id="openAiFromHint">Попробовать →</button>
+                </div>
 
-        <div class="fab-container" onclick="toggleChat()">
-            <div class="fab-icon">🤖</div>
+                <div class="search-box-wrapper">
+                    <div class="search-box">
+                        <span class="search-icon">🔍</span>
+                        <input 
+                            type="text" 
+                            id="searchInput" 
+                            placeholder="Поиск по имени, предмету или специализации..."
+                            autocomplete="off"
+                        >
+                        <button class="search-clear" id="searchClear" style="display: none;">✕</button>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <div class="filter-pills" id="filterPills">
+                        <button class="pill active" data-filter="all">
+                            <span class="pill-icon">🎯</span>
+                            <span class="pill-text">Все</span>
+                        </button>
+                        <button class="pill" data-filter="Математика">
+                            <span class="pill-icon">🔢</span>
+                            <span class="pill-text">Математика</span>
+                        </button>
+                        <button class="pill" data-filter="Физика">
+                            <span class="pill-icon">⚡</span>
+                            <span class="pill-text">Физика</span>
+                        </button>
+                        <button class="pill" data-filter="Английский">
+                            <span class="pill-icon">🇬🇧</span>
+                            <span class="pill-text">Английский</span>
+                        </button>
+                        <button class="pill" data-filter="Русский язык">
+                            <span class="pill-icon">📝</span>
+                            <span class="pill-text">Русский</span>
+                        </button>
+                        <button class="pill" data-filter="Химия">
+                            <span class="pill-icon">🧪</span>
+                            <span class="pill-text">Химия</span>
+                        </button>
+                        <button class="pill" data-filter="История">
+                            <span class="pill-icon">📜</span>
+                            <span class="pill-text">История</span>
+                        </button>
+                        <button class="pill" data-filter="Биология">
+                            <span class="pill-icon">🧬</span>
+                            <span class="pill-text">Биология</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="advanced-filters">
+                    <button class="filters-toggle" id="filtersToggle">
+                        <span class="toggle-icon">⚙️</span>
+                        <span class="toggle-text">Дополнительные фильтры</span>
+                        <span class="toggle-arrow">▼</span>
+                    </button>
+                    
+                    <div class="filters-panel" id="filtersPanel">
+                        <div class="filter-row">
+                            <div class="filter-group">
+                                <label class="filter-label">
+                                    <span class="label-icon">💰</span>
+                                    <span class="label-text">Цена за час</span>
+                                    <span class="label-value" id="priceDisplay">до 10000₸</span>
+                                </label>
+                                <div class="range-slider">
+                                    <input 
+                                        type="range" 
+                                        id="priceRange" 
+                                        min="3000" 
+                                        max="10000" 
+                                        step="500" 
+                                        value="10000"
+                                        class="slider"
+                                    >
+                                    <div class="range-track">
+                                        <div class="range-fill" id="rangeFill"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="filter-group">
+                                <label class="filter-label">
+                                    <span class="label-icon">📊</span>
+                                    <span class="label-text">Сортировка</span>
+                                </label>
+                                <select id="sortBy" class="custom-select">
+                                    <option value="rating">⭐ По рейтингу</option>
+                                    <option value="price-asc">💰 Сначала дешевле</option>
+                                    <option value="price-desc">💎 Сначала дороже</option>
+                                    <option value="experience">📅 По опыту</option>
+                                    <option value="reviews">💬 По отзывам</option>
+                                    <option value="popular">🔥 Популярные</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats-section">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-card glass">
+                        <div class="stat-icon">👨‍🏫</div>
+                        <div class="stat-number counting" id="tutorCount" data-target="25">0</div>
+                        <div class="stat-label">Репетиторов</div>
+                        <div class="stat-trend">↑ 5 новых</div>
+                    </div>
+                    <div class="stat-card glass">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-number">4.8</div>
+                        <div class="stat-label">Средний рейтинг</div>
+                        <div class="stat-trend">↑ +0.2</div>
+                    </div>
+                    <div class="stat-card glass">
+                        <div class="stat-icon">💬</div>
+                        <div class="stat-number counting" data-target="580">0</div>
+                        <div class="stat-label">Отзывов</div>
+                        <div class="stat-trend">100% проверены</div>
+                    </div>
+                    <div class="stat-card glass">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-number counting" data-target="2340">0</div>
+                        <div class="stat-label">Записей</div>
+                        <div class="stat-trend">↑ +156 эту неделю</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="recent-section" id="recentSection" style="display: none;">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <span class="title-icon">👀</span>
+                        Недавно смотрели
+                    </h2>
+                    <button class="clear-recent" id="clearRecent">Очистить</button>
+                </div>
+                <div class="recent-list" id="recentList"></div>
+            </div>
+        </section>
+
+        <section class="tutors-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <span class="title-icon">🌟</span>
+                        Наши репетиторы
+                    </h2>
+                    <div class="view-toggle">
+                        <button class="view-btn active" data-view="grid" title="Сетка">
+                            <span>⊞</span>
+                        </button>
+                        <button class="view-btn" data-view="list" title="Список">
+                            <span>☰</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tutors-grid skeleton-grid" id="skeletonGrid">
+                    <div class="tutor-skeleton"></div>
+                    <div class="tutor-skeleton"></div>
+                    <div class="tutor-skeleton"></div>
+                    <div class="tutor-skeleton"></div>
+                    <div class="tutor-skeleton"></div>
+                    <div class="tutor-skeleton"></div>
+                </div>
+
+                <div class="tutors-grid" id="tutorsGrid"></div>
+
+                <div class="no-results" id="noResults" style="display: none;">
+                    <div class="no-results-icon">🔍</div>
+                    <h3>Репетиторы не найдены</h3>
+                    <p>Попробуйте изменить фильтры или спросите AI-помощника</p>
+                    <button class="btn btn-primary" id="resetFilters">
+                        <span class="btn-text">Сбросить фильтры</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <div class="fab-container">
+            <button class="fab fab-ai pulse-animation" id="aiBtn" title="AI Помощник">
+                <span class="fab-icon">🤖</span>
+                <span class="fab-badge">NEW</span>
+            </button>
+            <button class="fab fab-favorites" id="favoritesBtn" title="Избранное">
+                <span class="fab-icon">❤️</span>
+                <span class="fab-count" id="favCount" style="display: none;">0</span>
+            </button>
+            <button class="fab fab-compare" id="compareBtn" title="Сравнить" style="display: none;">
+                <span class="fab-icon">⚖️</span>
+                <span class="fab-count" id="compareCount">0</span>
+            </button>
         </div>
+    </div>
 
-        <div id="chat-modal" class="modal-bottom">
+    <div class="modal" id="tutorModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content glass">
+            <button class="modal-close" id="closeTutorModal">
+                <span>✕</span>
+            </button>
+            <div class="modal-body" id="tutorModalBody"></div>
+        </div>
+    </div>
+
+    <div class="modal" id="regModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content glass" style="max-width: 500px;">
             <div class="modal-header">
-                <h3>AI Помощник</h3>
-                <span class="close-btn" onclick="toggleChat()">&times;</span>
+                <h2 class="modal-title">
+                    <span class="title-icon">🚀</span>
+                    Регистрация репетитора
+                </h2>
+                <button class="modal-close" id="closeRegModal">✕</button>
             </div>
-            <div class="chat-body" id="chat-messages">
-                <div class="message bot">Привет! Я помогу найти учителя. Кого ищем?</div>
-            </div>
-            <div class="chat-input">
-                <input type="text" id="ai-input" placeholder="Например: нужен физик для ЕНТ...">
-                <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
-            </div>
-        </div>
+            <div class="modal-body">
+                <div class="reg-form-container">
+                    <div class="reg-hero">
+                        <h3>Зарабатывай на знаниях!</h3>
+                        <p style="font-size: 0.9rem; margin-top: 5px; opacity: 0.8;">Присоединяйся к 500+ преподавателям</p>
+                    </div>
+                    
+                    <form id="tutorRegForm" onsubmit="event.preventDefault(); alert('Заявка отправлена! Менеджер свяжется с вами.'); document.getElementById('regModal').classList.remove('active');">
+                        <div class="form-group">
+                            <label class="form-label">Ваше имя</label>
+                            <span class="input-icon">👤</span>
+                            <input type="text" class="form-input" placeholder="Алишер Иванов" required>
+                        </div>
 
-        <div id="booking-modal" class="modal-center">
-            <div class="modal-content">
-                <h3>Запись на урок</h3>
-                <p id="booking-teacher-name">Учитель</p>
-                <input type="text" id="user-phone" placeholder="Ваш номер (WhatsApp)">
-                <input type="text" id="user-name-input" placeholder="Ваше Имя">
-                <div class="modal-actions">
-                    <button class="btn-secondary" onclick="closeBooking()">Отмена</button>
-                    <button class="btn-primary" onclick="submitBooking()">Отправить</button>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Предмет</label>
+                                <span class="input-icon">📚</span>
+                                <input type="text" class="form-input" placeholder="Математика" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Цена/час (₸)</label>
+                                <span class="input-icon">💰</span>
+                                <input type="number" class="form-input" placeholder="5000" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Телефон / WhatsApp</label>
+                            <span class="input-icon">📱</span>
+                            <input type="tel" class="form-input" placeholder="+7 (777) 000-00-00" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">О себе (кратко)</label>
+                            <span class="input-icon">📝</span>
+                            <input type="text" class="form-input" placeholder="Опыт 5 лет, готовлю к ЕНТ..." required>
+                        </div>
+
+                        <button type="submit" class="reg-submit-btn">Отправить заявку 🚀</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 
+    <div class="modal" id="aiModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content glass modal-ai">
+            <div class="modal-header">
+                <h2 class="modal-title">
+                    <span class="title-icon pulse-animation">🤖</span>
+                    AI Помощник
+                </h2>
+                <button class="modal-close" id="closeAiModal">✕</button>
+            </div>
+            <div class="ai-disclaimer">
+                <span class="disclaimer-icon">ℹ️</span>
+                <span class="disclaimer-text">Умный помощник на основе данных о репетиторах</span>
+            </div>
+            <div class="ai-chat" id="aiChat">
+                <div class="ai-message assistant">
+                    <div class="message-avatar">🤖</div>
+                    <div class="message-content">
+                        <div class="message-text">
+                            Привет! 👋 Я помогу найти идеального репетитора!
+                            <br><br>
+                            Расскажи мне:
+                            <ul>
+                                <li>Какой предмет нужен?</li>
+                                <li>Для чего? (ЕНТ, школа, олимпиада)</li>
+                                <li>Твой бюджет?</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ai-input-area">
+                <input 
+                    type="text" 
+                    id="aiInput" 
+                    placeholder="Напиши свой вопрос..."
+                    class="ai-input"
+                >
+                <button class="ai-send" id="aiSend">
+                    <span class="send-icon">→</span>
+                </button>
+            </div>
+            <div class="ai-suggestions">
+                <button class="suggestion-chip" data-message="Нужен репетитор по математике для ЕНТ">
+                    🔢 Математика для ЕНТ
+                </button>
+                <button class="suggestion-chip" data-message="Подготовка к IELTS">
+                    🇬🇧 Подготовка к IELTS
+                </button>
+                <button class="suggestion-chip" data-message="Покажи самых популярных">
+                    🔥 Популярные
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="favoritesModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content glass">
+            <div class="modal-header">
+                <h2 class="modal-title">
+                    <span class="title-icon">❤️</span>
+                    Избранное
+                </h2>
+                <button class="modal-close" id="closeFavoritesModal">✕</button>
+            </div>
+            <div class="modal-body" id="favoritesBody">
+                <div class="empty-state">
+                    <div class="empty-icon">💔</div>
+                    <p>Вы ещё не добавили репетиторов в избранное</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal modal-wide" id="compareModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content glass">
+            <div class="modal-header">
+                <h2 class="modal-title">
+                    <span class="title-icon">⚖️</span>
+                    Сравнение репетиторов
+                </h2>
+                <button class="modal-close" id="closeCompareModal">✕</button>
+            </div>
+            <div class="modal-body" id="compareBody"></div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
     <script src="app.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const regModal = document.getElementById('regModal');
+            const openRegBtn = document.getElementById('openRegModalBtn');
+            const closeRegBtn = document.getElementById('closeRegModal');
+            const overlay = regModal.querySelector('.modal-overlay');
+
+            function toggleRegModal(show) {
+                if (show) {
+                    regModal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    regModal.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            }
+
+            if(openRegBtn) openRegBtn.addEventListener('click', () => toggleRegModal(true));
+            if(closeRegBtn) closeRegBtn.addEventListener('click', () => toggleRegModal(false));
+            if(overlay) overlay.addEventListener('click', () => toggleRegModal(false));
+        });
+    </script>
 </body>
 </html>
