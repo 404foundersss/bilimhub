@@ -1,53 +1,54 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BilimHub</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>BilimHub Pro</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <script>
+        // Мгновенная установка темы до рендеринга
+        (function() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
 </head>
 <body>
 
     <div id="onboarding" class="onboarding-overlay">
         <div class="slide active" id="slide1">
-            <div class="onb-icon">🎓</div>
-            <h1>Добро пожаловать в BilimHub</h1>
-            <p>Найдите идеального репетитора для учебы и подготовки к экзаменам.</p>
-            <button class="btn-primary" onclick="nextSlide(2)">Далее</button>
+            <div class="onb-icon-bg">🏢</div>
+            <h1>BilimHub Professional</h1>
+            <p>Премиальный доступ к лучшим репетиторам Казахстана.</p>
+            <button class="btn-primary" onclick="nextSlide(2)">Продолжить</button>
         </div>
         <div class="slide" id="slide2">
-            <div class="onb-icon">🤖</div>
-            <h1>Умный AI Помощник</h1>
-            <p>Наш ИИ подберет учителя под ваш бюджет и цели за пару секунд.</p>
-            <button class="btn-primary" onclick="nextSlide(3)">Понятно</button>
-        </div>
-        <div class="slide" id="slide3">
-            <div class="onb-icon">🚀</div>
-            <h1>Начнем обучение?</h1>
-            <p>Сотни проверенных учителей уже ждут вашей заявки.</p>
-            <button class="btn-primary" onclick="finishOnboarding()">Начать</button>
-        </div>
-        <div class="dots-container">
-            <span class="dot active"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
+            <div class="onb-icon-bg">💼</div>
+            <h1>Экспертный уровень</h1>
+            <p>Выбирайте преподавателей по строгим критериям без лишних деталей.</p>
+            <button class="btn-primary" onclick="finishOnboarding()">Начать работу</button>
         </div>
     </div>
 
     <div id="mainApp" style="display:none;">
         <header>
             <div class="header-top">
-                <div class="logo">BilimHub</div>
-                <button class="theme-btn" onclick="toggleTheme()">🌙</button>
+                <div class="logo">BilimHub<span class="accent-dot">.</span></div>
+                <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
             </div>
-            <div class="filters-scroll">
-                <button class="pill active" onclick="filterBy('Все', this)">Все</button>
-                <button class="pill" onclick="filterBy('Математика', this)">Математика</button>
-                <button class="pill" onclick="filterBy('Английский', this)">Английский</button>
-                <button class="pill" onclick="filterBy('Физика', this)">Физика</button>
-                <button class="pill" onclick="filterBy('История', this)">История</button>
+            
+            <div class="filters-container">
+                <div class="filters-scroll">
+                    <button class="pill active" onclick="filterBy('Все', this)">Все</button>
+                    <button class="pill" onclick="filterBy('Математика', this)">Математика</button>
+                    <button class="pill" onclick="filterBy('Английский', this)">Английский</button>
+                    <button class="pill" onclick="filterBy('Физика', this)">Физика</button>
+                    <button class="pill" onclick="filterBy('Қазақ Тілі', this)">Қазақ Тілі</button>
+                    <button class="pill" onclick="filterBy('Русский язык', this)">Русский язык</button>
+                    <button class="pill" onclick="filterBy('История', this)">История</button>
+                    <button class="pill" onclick="filterBy('Химия', this)">Химия</button>
+                </div>
             </div>
         </header>
 
@@ -56,19 +57,18 @@
                 </div>
         </main>
 
-        <button class="fab" onclick="openAI()">🤖</button>
+        <button class="fab" onclick="openAI()">✨</button>
     </div>
 
     <div id="aiModal" class="modal-bottom">
+        <div class="modal-overlay" onclick="closeModal('aiModal')"></div>
         <div class="modal-content">
-            <div class="modal-header">
-                <h3>AI Mentor</h3>
-                <span onclick="closeModal('aiModal')">✕</span>
-            </div>
+            <div class="drag-handle"></div>
+            <div class="modal-header"><h3>AI Консультант</h3></div>
             <div id="chatBox" class="chat-area"></div>
             <div class="chat-input-row">
-                <input type="text" id="aiInput" placeholder="Напиши предмет...">
-                <button onclick="sendMsg()">➤</button>
+                <input type="text" id="aiInput" placeholder="Введите ваш запрос...">
+                <button class="send-btn" onclick="sendMsg()">↑</button>
             </div>
         </div>
     </div>
