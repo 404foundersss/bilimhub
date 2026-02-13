@@ -75,3 +75,4 @@ async function sendMsg() {
     box.innerHTML += `<p style="color:var(--accent)"><b>AI:</b> ${data.reply}</p>`;
     box.scrollTop = box.scrollHeight;
 }
+
