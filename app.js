@@ -186,7 +186,7 @@ app.get('/api/health', (req, res) => {
 });
 
 // Статическая папка (если нужна)
-app.use(express.static('.'));
+app.use(express.static('public'));
 
 // Запуск
 const PORT = process.env.PORT || 3000;
