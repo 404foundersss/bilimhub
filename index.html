@@ -1,78 +1,396 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>BilimHub Pro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BilimHub • Элитное образование</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <script>
-        // Мгновенная установка темы до рендеринга
-        (function() {
-            const savedTheme = localStorage.getItem('theme') || 'light';
-            document.documentElement.setAttribute('data-theme', savedTheme);
-        })();
-    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Urbanist:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
+    <!-- Декоративные фоновые элементы -->
+    <div class="bg-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+    <span class="theme-icon moon">🌙</span>
+    <span class="theme-icon sun">☀️</span>
+</button>
+
+    <!-- ONBOARDING -->
     <div id="onboarding" class="onboarding-overlay">
-        <div class="slide active" id="slide1">
-            <div class="onb-icon-bg">🏢</div>
-            <h1>BilimHub Professional</h1>
-            <p>Премиальный доступ к лучшим репетиторам Казахстана.</p>
-            <button class="btn-primary" onclick="nextSlide(2)">Продолжить</button>
-        </div>
-        <div class="slide" id="slide2">
-            <div class="onb-icon-bg">💼</div>
-            <h1>Экспертный уровень</h1>
-            <p>Выбирайте преподавателей по строгим критериям без лишних деталей.</p>
-            <button class="btn-primary" onclick="finishOnboarding()">Начать работу</button>
+        <div class="onboarding-content">
+            <div class="onboarding-logo">
+                <svg width="130" height="130" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 12px 36px rgba(0, 0, 0, 0.25));">
+                <defs>
+                    <linearGradient id="bookGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#40916C;stop-opacity:0.95" />
+                        <stop offset="100%" style="stop-color:#1B4332;stop-opacity:0.95" />
+                    </linearGradient>
+                    <linearGradient id="moleculeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#0F8B8D;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#00A8A8;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                
+                <path d="M25 60 Q25 55 30 50 L90 50 Q95 55 95 60 L95 95 Q95 100 90 105 L30 105 Q25 100 25 95 Z" fill="url(#bookGrad)"/>
+                <path d="M60 50 L60 105" stroke="#2D6A4F" stroke-width="2" opacity="0.5"/>
+                <rect x="28" y="55" width="28" height="45" rx="1.5" fill="#2D6A4F" opacity="0.7"/>
+                <rect x="64" y="55" width="28" height="45" rx="1.5" fill="#2D6A4F" opacity="0.7"/>
+                
+                <circle cx="60" cy="25" r="7" fill="url(#moleculeGrad)"/>
+                <circle cx="38" cy="33" r="6" fill="url(#moleculeGrad)"/>
+                <circle cx="82" cy="33" r="6" fill="url(#moleculeGrad)"/>
+                <circle cx="18" cy="45" r="5.5" fill="url(#moleculeGrad)"/>
+                <circle cx="102" cy="45" r="5.5" fill="url(#moleculeGrad)"/>
+                <circle cx="60" cy="45" r="4" fill="url(#moleculeGrad)"/>
+                
+                <line x1="60" y1="25" x2="38" y2="33" stroke="url(#moleculeGrad)" stroke-width="1.5" opacity="0.7"/>
+                <line x1="60" y1="25" x2="82" y2="33" stroke="url(#moleculeGrad)" stroke-width="1.5" opacity="0.7"/>
+                <line x1="38" y1="33" x2="18" y2="45" stroke="url(#moleculeGrad)" stroke-width="1.5" opacity="0.65"/>
+                <line x1="82" y1="33" x2="102" y2="45" stroke="url(#moleculeGrad)" stroke-width="1.5" opacity="0.65"/>
+                <line x1="38" y1="33" x2="60" y2="45" stroke="url(#moleculeGrad)" stroke-width="1.3" opacity="0.5"/>
+                <line x1="82" y1="33" x2="60" y2="45" stroke="url(#moleculeGrad)" stroke-width="1.3" opacity="0.5"/>
+                
+                <path d="M60 112 L64 121 L73.5 121 L66.5 126 L70.5 135 L60 130 L49.5 135 L53.5 126 L46.5 121 L56 121 Z" fill="url(#moleculeGrad)" opacity="0.9"/>
+            </svg>
+            </div>
+            <h1 class="onboarding-title">BilimHub</h1>
+            <p class="onboarding-subtitle">Ваш путь к знаниям начинается здесь</p>
+            <p class="onboarding-description">
+                Элитные наставники, персонализированный подход,<br> технологии искусственного интеллекта
+            </p>
+
+            <div class="onboarding-features">
+                <div class="feature-item">
+                    <span class="feature-icon">🎯</span>
+                    <span>Индивидуальный подбор</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">🤖</span>
+                    <span>AI-помощник 24/7</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">⭐</span>
+                    <span>Проверенные эксперты</span>
+                </div>
+            </div>
+
+            <button class="btn-onboarding" onclick="closeOnboarding()">
+            <span>Начать обучение</span>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M7 3L14 10L7 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
         </div>
     </div>
 
-    <div id="mainApp" style="display:none;">
-        <header>
-            <div class="header-top">
-                <div class="logo">BilimHub<span class="accent-dot">.</span></div>
-                <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
+    <!-- MAIN APP -->
+    <div id="app" style="display:none">
+
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="brand">
+                    <svg class="brand-logo" width="44" height="44" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M25 60 Q25 55 30 50 L90 50 Q95 55 95 60 L95 95 Q95 100 90 105 L30 105 Q25 100 25 95 Z" fill="#40916C" opacity="0.85"/>
+                    <path d="M60 50 L60 105" stroke="#2D6A4F" stroke-width="1.5" opacity="0.4"/>
+                    <rect x="28" y="55" width="28" height="45" rx="1" fill="#2D6A4F" opacity="0.6"/>
+                    <rect x="64" y="55" width="28" height="45" rx="1" fill="#2D6A4F" opacity="0.6"/>
+                    
+                    <circle cx="60" cy="25" r="6" fill="#0F8B8D"/>
+                    <circle cx="38" cy="33" r="5" fill="#0F8B8D"/>
+                    <circle cx="82" cy="33" r="5" fill="#0F8B8D"/>
+                    <circle cx="20" cy="45" r="4.5" fill="#0F8B8D"/>
+                    <circle cx="100" cy="45" r="4.5" fill="#0F8B8D"/>
+                    
+                    <line x1="60" y1="25" x2="38" y2="33" stroke="#0F8B8D" stroke-width="1.2" opacity="0.6"/>
+                    <line x1="60" y1="25" x2="82" y2="33" stroke="#0F8B8D" stroke-width="1.2" opacity="0.6"/>
+                    <line x1="38" y1="33" x2="20" y2="45" stroke="#0F8B8D" stroke-width="1.2" opacity="0.6"/>
+                    <line x1="82" y1="33" x2="100" y2="45" stroke="#0F8B8D" stroke-width="1.2" opacity="0.6"/>
+                    <line x1="38" y1="33" x2="60" y2="42" stroke="#0F8B8D" stroke-width="1.2" opacity="0.4"/>
+                    <line x1="82" y1="33" x2="60" y2="42" stroke="#0F8B8D" stroke-width="1.2" opacity="0.4"/>
+                    
+                    <path d="M60 110 L63.5 118 L72 118 L66 122 L69.5 130 L60 125 L50.5 130 L54 122 L48 118 L56.5 118 Z" fill="#0F8B8D" opacity="0.85"/>
+                </svg>
+                    <div class="brand-text">
+                        <span class="brand-name">BilimHub</span>
+                        <span class="brand-tagline">Premium Education</span>
+                    </div>
+                </div>
+
+                <div class="header-actions">
+                    <button class="btn-register-teacher" onclick="openRegisterTeacher()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+                        <line x1="19" y1="8" x2="19" y2="14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="16" y1="11" x2="22" y2="11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <span>Стать преподавателем</span>
+                </button>
+                    <button class="icon-btn" onclick="toggleChat()" title="Чат с AI-помощником">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M21 15C21 15.5304 20.7893 16.0391 20.4142 16.4142C20.0391 16.7893 19.5304 17 19 17H7L3 21V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                </div>
             </div>
-            
+
+            <!-- Filters -->
             <div class="filters-container">
                 <div class="filters-scroll">
-                    <button class="pill active" onclick="filterBy('Все', this)">Все</button>
-                    <button class="pill" onclick="filterBy('Математика', this)">Математика</button>
-                    <button class="pill" onclick="filterBy('Английский', this)">Английский</button>
-                    <button class="pill" onclick="filterBy('Физика', this)">Физика</button>
-                    <button class="pill" onclick="filterBy('Қазақ Тілі', this)">Қазақ Тілі</button>
-                    <button class="pill" onclick="filterBy('Русский язык', this)">Русский язык</button>
-                    <button class="pill" onclick="filterBy('История', this)">История</button>
-                    <button class="pill" onclick="filterBy('Химия', this)">Химия</button>
+                    <button class="filter-chip active" onclick="filterTeachers('Все',this)">
+                    <span>🎓</span>
+                    <span>Все предметы</span>
+                </button>
+                    <button class="filter-chip" onclick="filterTeachers('Математика',this)">
+                    <span>📐</span>
+                    <span>Математика</span>
+                </button>
+                    <button class="filter-chip" onclick="filterTeachers('Английский',this)">
+                    <span>🌐</span>
+                    <span>Английский</span>
+                </button>
+                    <button class="filter-chip" onclick="filterTeachers('Физика',this)">
+                    <span>⚛️</span>
+                    <span>Физика</span>
+                </button>
+                    <button class="filter-chip" onclick="filterTeachers('Химия',this)">
+                    <span>🧪</span>
+                    <span>Химия</span>
+                </button>
+                    <button class="filter-chip" onclick="filterTeachers('История',this)">
+                    <span>📜</span>
+                    <span>История</span>
+                </button>
+                    <button class="filter-chip" onclick="filterTeachers('География',this)">
+                    <span>🌍</span>
+                    <span>География</span>
+                </button>
+                    <button class="filter-chip" onclick="filterTeachers('Биология',this)">
+                    <span>🌿</span>
+                    <span>Биология</span>
+                </button>
                 </div>
             </div>
         </header>
 
-        <main class="container">
-            <div id="tutorsGrid" class="grid">
+        <!-- Teachers Grid -->
+        <main class="main-content">
+            <div id="teachers-grid" class="teachers-grid">
+                <!-- Teachers will be loaded dynamically from the API -->
+            </div>
+
+            <!-- Reviews Section -->
+            <section class="reviews-section">
+                <div class="section-header">
+                    <h2>⭐ Отзывы студентов</h2>
+                    <p>Что говорят наши ученики</p>
                 </div>
+                <div class="reviews-grid">
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"Отличный преподаватель! За 3 месяца подготовился к ЕНТ на 85 баллов. Объясняет очень понятно."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">АР</div>
+                            <div>
+                                <div class="review-name">Арман Рахметов</div>
+                                <div class="review-subject">Математика</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"Помогла с английским перед собеседованием в университет. Очень профессиональный подход!"</p>
+                        <div class="review-author">
+                            <div class="review-avatar">АА</div>
+                            <div>
+                                <div class="review-name">Айнур Асанбай</div>
+                                <div class="review-subject">Английский язык</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"Наконец-то понял химию! Преподаватель объясняет сложные формулы просто и интересно. Спасибо!"</p>
+                        <div class="review-author">
+                            <div class="review-avatar">МК</div>
+                            <div>
+                                <div class="review-name">Марат Кайратов</div>
+                                <div class="review-subject">Химия</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★☆</div>
+                        <p class="review-text">"Биология становится интересной! Преподаватель использует визуальные материалы, все понятно."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">ЛА</div>
+                            <div>
+                                <div class="review-name">Лаура Абайқызы</div>
+                                <div class="review-subject">Биология</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </main>
 
-        <button class="fab" onclick="openAI()">✨</button>
-    </div>
-
-    <div id="aiModal" class="modal-bottom">
-        <div class="modal-overlay" onclick="closeModal('aiModal')"></div>
-        <div class="modal-content">
-            <div class="drag-handle"></div>
-            <div class="modal-header"><h3>AI Консультант</h3></div>
-            <div id="chatBox" class="chat-area"></div>
-            <div class="chat-input-row">
-                <input type="text" id="aiInput" placeholder="Введите ваш запрос...">
-                <button class="send-btn" onclick="sendMsg()">↑</button>
+        <!-- AI Chat Modal -->
+        <div id="chat-modal" class="chat-modal">
+            <div class="chat-container">
+                <div class="chat-header">
+                    <div class="chat-header-info">
+                        <div class="chat-bot-avatar">🤖</div>
+                        <div>
+                            <h3>BilimHub Mentor</h3>
+                            <p>AI-помощник</p>
+                        </div>
+                    </div>
+                    <button class="chat-close" onclick="toggleChat()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+                </div>
+                <div id="chat-messages" class="chat-messages">
+                    <!-- Messages will be added here dynamically -->
+                </div>
+                <div class="chat-input-container">
+                    <input type="text" id="chat-input" placeholder="Напишите сообщение..." class="chat-input" />
+                    <button class="chat-send-btn" onclick="sendChatMessage()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M22 2L11 13M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                </div>
             </div>
         </div>
+
+        <!-- Floating AI Chat Button -->
+        <button class="fab" onclick="toggleChat()" title="Открыть AI-помощника">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+            <path d="M21 15C21 15.5304 20.7893 16.0391 20.4142 16.4142C20.0391 16.7893 19.5304 17 19 17H7L3 21V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="fab-badge">AI</span>
+    </button>
+
+        <!-- Register Teacher Modal -->
+        <div id="register-teacher-modal" class="booking-modal" style="display:none">
+            <div class="booking-container">
+                <button class="booking-close" onclick="closeRegisterTeacher()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+
+                <div class="booking-content">
+                    <div class="booking-header">
+                        <div class="register-teacher-icon">👨‍🏫</div>
+                        <h2>Стать преподавателем</h2>
+                        <p>Заполните анкету и мы свяжемся с вами</p>
+                    </div>
+
+                    <div class="booking-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="teacher-first-name">Имя</label>
+                                <input id="teacher-first-name" type="text" placeholder="Введите имя" class="form-input">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="teacher-last-name">Фамилия</label>
+                                <input id="teacher-last-name" type="text" placeholder="Введите фамилию" class="form-input">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="teacher-subject">Предмет преподавания</label>
+                            <div class="select-wrapper">
+                                <select id="teacher-subject" class="form-input form-select">
+                                <option value="" disabled selected>Выберите предмет</option>
+                                <option value="Математика">📐 Математика</option>
+                                <option value="Английский">🌐 Английский язык</option>
+                                <option value="Физика">⚛️ Физика</option>
+                                <option value="Химия">🧪 Химия</option>
+                                <option value="История">📜 История</option>
+                                <option value="География">🌍 География</option>
+                                <option value="Биология">🌿 Биология</option>
+                            </select>
+                                <svg class="select-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="teacher-phone">Номер телефона</label>
+                            <input id="teacher-phone" type="tel" placeholder="+7 (___) ___-__-__" class="form-input">
+                        </div>
+
+                        <button class="btn-submit" onclick="submitRegisterTeacher()">
+                        <span>Отправить анкету</span>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M7 3L14 10L7 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking Modal -->
+        <div id="booking-modal" class="booking-modal">
+            <div class="booking-container">
+                <button class="booking-close" onclick="closeBooking()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+
+                <div class="booking-content">
+                    <div class="booking-header">
+                        <h2>Запись на занятие</h2>
+                        <p id="booking-teacher-name">Выберите удобное время</p>
+                    </div>
+
+                    <div class="booking-form">
+                        <div class="form-group">
+                            <label for="user-name-input">Ваше имя</label>
+                            <input id="user-name-input" type="text" placeholder="Введите ваше имя" class="form-input">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="user-phone">Номер телефона</label>
+                            <input id="user-phone" type="tel" placeholder="+7 (___) ___-__-__" class="form-input">
+                        </div>
+
+                        <button class="btn-submit" onclick="submitBooking()">
+                        <span>Отправить заявку</span>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M7 3L14 10L7 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script src="app.js"></script>
 </body>
+
 </html>
