@@ -477,8 +477,6 @@
                     <div class="ob-pill">⚛️ Физика</div>
                     <div class="ob-pill">🧪 Химия</div>
                     <div class="ob-pill">📜 История</div>
-                    <div class="ob-pill">📚 Қазақ Тілі</div>
-                    <div class="ob-pill">📚 Русский Язык</div>
                 </div>
 
                 <div class="ob-bottom">
@@ -509,24 +507,12 @@
             }
 
             function obDone() {
-                try {
-                    localStorage.setItem('bilimhub_onboarding_done', 'true');
-                } catch (e) {}
                 document.getElementById('onboarding').style.display = 'none';
                 var app = document.getElementById('app');
                 if (app) app.style.display = 'block';
                 if (typeof loadTeachers === 'function') loadTeachers();
             }
-            // Check if already done
-            (function() {
-                try {
-                    if (localStorage.getItem('bilimhub_onboarding_done')) {
-                        document.getElementById('onboarding').style.display = 'none';
-                        var app = document.getElementById('app');
-                        if (app) app.style.display = 'block';
-                    }
-                } catch (e) {}
-            })();
+            // Онбординг показывается при каждом запуске
         </script>
 
     </div>
@@ -538,7 +524,7 @@
         <header class="header">
             <div class="header-content">
                 <div class="brand">
-
+                    <img src="logo.webp" alt="BilimHub" class="brand-logo-img">
                     <div class="brand-text">
                         <span class="brand-name">BilimHub</span>
                         <span class="brand-tagline">Premium Education</span>
@@ -695,8 +681,7 @@
                                 <option value="Физика">⚛️ Физика</option>
                                 <option value="Химия">🧪 Химия</option>
                                 <option value="История">📜 История</option>
-                                 <option value="Қазақ Тілі">📚 Қазақ Тілі</option>
-                                  <option value="Русский Язык">📚 Русский Язык</option>
+
                             </select>
                                 <svg class="select-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none">
                                 <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
