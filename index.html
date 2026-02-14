@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,74 +11,542 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Urbanist:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
-<!-- Декоративные фоновые элементы -->
-<div class="bg-shapes">
-    <div class="shape shape-1"></div>
-    <div class="shape shape-2"></div>
-    <div class="shape shape-3"></div>
-</div>
+    <!-- Декоративные фоновые элементы -->
+    <div class="bg-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
 
-<!-- Theme Toggle -->
-<button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
     <span class="theme-icon moon">🌙</span>
     <span class="theme-icon sun">☀️</span>
 </button>
 
-<!-- ONBOARDING -->
-<div id="onboarding" class="onboarding-overlay">
-    <div class="onboarding-content">
-        <div class="onboarding-logo">
-            <img src="logo.webp" alt="BilimHub Logo" class="onboarding-logo-img">
-        </div>
-        <h1 class="onboarding-title">BilimHub</h1>
-        <p class="onboarding-subtitle">Ваш путь к знаниям начинается здесь</p>
-        <p class="onboarding-description">
-            Элитные наставники, персонализированный подход,<br>
-            технологии искусственного интеллекта
-        </p>
-        
-        <div class="onboarding-features">
-            <div class="feature-item">
-                <span class="feature-icon">🎯</span>
-                <span>Индивидуальный подбор</span>
-            </div>
-            <div class="feature-item">
-                <span class="feature-icon">🤖</span>
-                <span>AI-помощник 24/7</span>
-            </div>
-            <div class="feature-item">
-                <span class="feature-icon">⭐</span>
-                <span>Проверенные эксперты</span>
-            </div>
-        </div>
-        
-        <button class="btn-onboarding" id="start-btn" onclick="localStorage.setItem('bilimhub_onboarding_done','true');document.getElementById('onboarding').style.display='none';document.getElementById('app').style.display='block';if(typeof loadTeachers==='function')loadTeachers();">
-            <span>Начать обучение</span>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M7 3L14 10L7 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-        </button>
-    </div>
-</div>
+    <!-- ONBOARDING -->
+    <div id="onboarding">
+        <style>
+            #onboarding {
+                position: fixed;
+                inset: 0;
+                z-index: 99999;
+                background: #0B1A2E;
+                font-family: 'Urbanist', 'Segoe UI', sans-serif;
+                overflow: hidden;
+            }
+            
+            #onboarding.hidden {
+                display: none !important;
+            }
+            /* Background */
+            
+            .ob-bg {
+                position: absolute;
+                inset: 0;
+                overflow: hidden;
+                pointer-events: none;
+            }
+            
+            .ob-circle {
+                position: absolute;
+                border-radius: 50%;
+                filter: blur(80px);
+                opacity: 0.2;
+            }
+            
+            .ob-c1 {
+                width: 500px;
+                height: 500px;
+                background: #1B6B45;
+                top: -100px;
+                right: -80px;
+                animation: obFloat 12s ease-in-out infinite;
+            }
+            
+            .ob-c2 {
+                width: 400px;
+                height: 400px;
+                background: #162844;
+                bottom: -100px;
+                left: -80px;
+                animation: obFloat 16s ease-in-out infinite reverse;
+            }
+            
+            .ob-c3 {
+                width: 250px;
+                height: 250px;
+                background: #2D6A4F;
+                top: 40%;
+                left: 40%;
+                animation: obFloat 10s ease-in-out infinite 3s;
+            }
+            
+            @keyframes obFloat {
+                0%,
+                100% {
+                    transform: translate(0, 0);
+                }
+                33% {
+                    transform: translate(30px, -30px);
+                }
+                66% {
+                    transform: translate(-20px, 20px);
+                }
+            }
+            /* Slides container */
+            
+            .ob-slides {
+                position: relative;
+                z-index: 1;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            /* Single slide */
+            
+            .ob-slide {
+                display: none;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                padding: 36px 28px 28px;
+                width: 100%;
+                max-width: 440px;
+                height: 100%;
+            }
+            
+            .ob-slide.on {
+                display: flex;
+                animation: obIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+            }
+            
+            @keyframes obIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            /* Logo */
+            
+            .ob-logo {
+                width: 90px;
+                height: 90px;
+                margin-bottom: 20px;
+                animation: obBob 3s ease-in-out infinite;
+            }
+            
+            @keyframes obBob {
+                0%,
+                100% {
+                    transform: translateY(0);
+                }
+                50% {
+                    transform: translateY(-10px);
+                }
+            }
+            /* Big emoji */
+            
+            .ob-emoji {
+                font-size: 70px;
+                margin-bottom: 20px;
+                display: block;
+                animation: obPop 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+            
+            @keyframes obPop {
+                from {
+                    transform: scale(0.3);
+                    opacity: 0;
+                }
+                to {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+            /* Text */
+            
+            .ob-title {
+                font-family: 'Playfair Display', Georgia, serif;
+                font-size: clamp(34px, 8vw, 54px);
+                font-weight: 900;
+                color: #fff;
+                letter-spacing: -0.02em;
+                line-height: 1.1;
+                margin-bottom: 12px;
+            }
+            
+            .ob-title .green {
+                background: linear-gradient(135deg, #40916C, #74C69D);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            
+            .ob-desc {
+                font-size: clamp(14px, 3vw, 16px);
+                color: rgba(255, 255, 255, 0.6);
+                line-height: 1.7;
+                margin-bottom: 30px;
+                max-width: 300px;
+            }
+            /* Feature cards */
+            
+            .ob-cards {
+                display: flex;
+                gap: 12px;
+                flex-wrap: wrap;
+                justify-content: center;
+                margin-bottom: 30px;
+            }
+            
+            .ob-card {
+                background: rgba(255, 255, 255, 0.07);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 16px;
+                padding: 14px 16px;
+                min-width: 76px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 6px;
+            }
+            
+            .ob-card-icon {
+                font-size: 26px;
+            }
+            
+            .ob-card-text {
+                font-size: 12px;
+                font-weight: 700;
+                color: rgba(255, 255, 255, 0.8);
+            }
+            /* Stats */
+            
+            .ob-stats {
+                display: flex;
+                gap: 14px;
+                justify-content: center;
+                margin-bottom: 30px;
+                flex-wrap: wrap;
+            }
+            
+            .ob-stat {
+                background: rgba(255, 255, 255, 0.07);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 16px;
+                padding: 16px 20px;
+                min-width: 90px;
+                text-align: center;
+            }
+            
+            .ob-stat-n {
+                font-family: 'Playfair Display', Georgia, serif;
+                font-size: 28px;
+                font-weight: 900;
+                color: #40916C;
+                display: block;
+            }
+            
+            .ob-stat-l {
+                font-size: 11px;
+                font-weight: 600;
+                color: rgba(255, 255, 255, 0.5);
+            }
+            /* Pills */
+            
+            .ob-pills {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 9px;
+                justify-content: center;
+                margin-bottom: 30px;
+                max-width: 340px;
+            }
+            
+            .ob-pill {
+                padding: 8px 16px;
+                border-radius: 50px;
+                background: rgba(255, 255, 255, 0.08);
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                font-size: 13px;
+                font-weight: 600;
+                color: rgba(255, 255, 255, 0.85);
+            }
+            /* Bottom */
+            
+            .ob-bottom {
+                width: 100%;
+                max-width: 360px;
+            }
+            
+            .ob-bar {
+                width: 100%;
+                height: 3px;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 3px;
+                overflow: hidden;
+                margin-bottom: 18px;
+            }
+            
+            .ob-bar-fill {
+                height: 100%;
+                background: linear-gradient(90deg, #2D6A4F, #52B788);
+                border-radius: 3px;
+                transition: width 0.4s ease;
+            }
+            
+            .ob-dots {
+                display: flex;
+                gap: 8px;
+                justify-content: center;
+                margin-bottom: 18px;
+            }
+            
+            .ob-dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.2);
+                transition: all 0.3s;
+            }
+            
+            .ob-dot.on {
+                width: 24px;
+                border-radius: 4px;
+                background: #40916C;
+            }
+            
+            .ob-btn {
+                width: 100%;
+                padding: 17px;
+                border-radius: 50px;
+                border: none;
+                background: linear-gradient(135deg, #2D6A4F, #52B788);
+                color: #fff;
+                font-size: 17px;
+                font-weight: 800;
+                font-family: inherit;
+                cursor: pointer;
+                box-shadow: 0 8px 28px rgba(45, 106, 79, 0.5);
+                transition: transform 0.2s, box-shadow 0.2s;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            .ob-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 12px 36px rgba(45, 106, 79, 0.6);
+            }
+            
+            .ob-btn:active {
+                transform: scale(0.97);
+            }
+            
+            .ob-skip {
+                display: block;
+                width: 100%;
+                margin-top: 14px;
+                padding: 8px;
+                background: none;
+                border: none;
+                color: rgba(255, 255, 255, 0.3);
+                font-size: 14px;
+                font-weight: 600;
+                font-family: inherit;
+                cursor: pointer;
+                -webkit-tap-highlight-color: transparent;
+                transition: color 0.2s;
+            }
+            
+            .ob-skip:hover {
+                color: rgba(255, 255, 255, 0.6);
+            }
+        </style>
 
-<!-- MAIN APP -->
-<div id="app" style="display:none">
-    
-    <!-- Header -->
-    <header class="header">
-        <div class="header-content">
-            <div class="brand">
-                <img src="logo.webp" alt="BilimHub" class="brand-logo-img">
-                <div class="brand-text">
-                    <span class="brand-name">BilimHub</span>
-                    <span class="brand-tagline">Premium Education</span>
+        <div class="ob-bg">
+            <div class="ob-circle ob-c1"></div>
+            <div class="ob-circle ob-c2"></div>
+            <div class="ob-circle ob-c3"></div>
+        </div>
+
+        <div class="ob-slides">
+
+            <!-- Слайд 1 -->
+            <div class="ob-slide on" id="s1">
+                <svg class="ob-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="48" stroke="#40916C" stroke-width="2" opacity="0.3"/>
+            <circle cx="50" cy="34" r="10" fill="#40916C"/>
+            <circle cx="30" cy="60" r="8" fill="#52B788"/>
+            <circle cx="70" cy="60" r="8" fill="#52B788"/>
+            <circle cx="50" cy="72" r="6" fill="#74C69D"/>
+            <line x1="50" y1="44" x2="30" y2="60" stroke="#40916C" stroke-width="2"/>
+            <line x1="50" y1="44" x2="70" y2="60" stroke="#40916C" stroke-width="2"/>
+            <line x1="30" y1="68" x2="50" y2="72" stroke="#52B788" stroke-width="1.5"/>
+            <line x1="70" y1="68" x2="50" y2="72" stroke="#52B788" stroke-width="1.5"/>
+            <rect x="20" y="78" width="60" height="6" rx="3" fill="#2D6A4F"/>
+        </svg>
+
+                <h1 class="ob-title">Bilim<span class="green">Hub</span></h1>
+                <p class="ob-desc">Платформа школьных репетиторов. Найди своего идеального наставника за минуту.</p>
+
+                <div class="ob-cards">
+                    <div class="ob-card"><span class="ob-card-icon">🎯</span><span class="ob-card-text">Подбор</span></div>
+                    <div class="ob-card"><span class="ob-card-icon">🤖</span><span class="ob-card-text">AI 24/7</span></div>
+                    <div class="ob-card"><span class="ob-card-icon">⭐</span><span class="ob-card-text">Топ эксперты</span></div>
+                    <div class="ob-card"><span class="ob-card-icon">📱</span><span class="ob-card-text">Онлайн</span></div>
+                </div>
+
+                <div class="ob-bottom">
+                    <div class="ob-bar">
+                        <div class="ob-bar-fill" style="width:33%"></div>
+                    </div>
+                    <div class="ob-dots">
+                        <div class="ob-dot on"></div>
+                        <div class="ob-dot"></div>
+                        <div class="ob-dot"></div>
+                    </div>
+                    <button class="ob-btn" onclick="obGo(2)">
+                Далее
+                <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M7 3L14 10L7 17" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+                    <button class="ob-skip" onclick="obDone()">Пропустить</button>
                 </div>
             </div>
-            
-            <div class="header-actions">
-                <button class="btn-register-teacher" onclick="openRegisterTeacher()">
+
+            <!-- Слайд 2 -->
+            <div class="ob-slide" id="s2">
+                <span class="ob-emoji">👨‍🏫</span>
+                <h1 class="ob-title">Лучшие<br><span class="green">репетиторы</span></h1>
+                <p class="ob-desc">Проверенные преподаватели с реальным опытом, высокими оценками и сотнями довольных учеников</p>
+
+                <div class="ob-stats">
+                    <div class="ob-stat">
+                        <span class="ob-stat-n">50+</span>
+                        <span class="ob-stat-l">Преподавателей</span>
+                    </div>
+                    <div class="ob-stat">
+                        <span class="ob-stat-n">4.9★</span>
+                        <span class="ob-stat-l">Средний рейтинг</span>
+                    </div>
+                    <div class="ob-stat">
+                        <span class="ob-stat-n">1000+</span>
+                        <span class="ob-stat-l">Занятий</span>
+                    </div>
+                </div>
+
+                <div class="ob-bottom">
+                    <div class="ob-bar">
+                        <div class="ob-bar-fill" style="width:66%"></div>
+                    </div>
+                    <div class="ob-dots">
+                        <div class="ob-dot"></div>
+                        <div class="ob-dot on"></div>
+                        <div class="ob-dot"></div>
+                    </div>
+                    <button class="ob-btn" onclick="obGo(3)">
+                Далее
+                <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M7 3L14 10L7 17" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+                    <button class="ob-skip" onclick="obDone()">Пропустить</button>
+                </div>
+            </div>
+
+            <!-- Слайд 3 -->
+            <div class="ob-slide" id="s3">
+                <span class="ob-emoji">📚</span>
+                <h1 class="ob-title">Любой<br><span class="green">предмет</span></h1>
+                <p class="ob-desc">Математика, физика, английский и другие — всё в одном месте</p>
+
+                <div class="ob-pills">
+                    <div class="ob-pill">📐 Математика</div>
+                    <div class="ob-pill">🌐 Английский</div>
+                    <div class="ob-pill">⚛️ Физика</div>
+                    <div class="ob-pill">🧪 Химия</div>
+                    <div class="ob-pill">📜 История</div>
+                    <div class="ob-pill">📚 Қазақ Тілі</div>
+                    <div class="ob-pill">📚 Русский Язык</div>
+                </div>
+
+                <div class="ob-bottom">
+                    <div class="ob-bar">
+                        <div class="ob-bar-fill" style="width:100%"></div>
+                    </div>
+                    <div class="ob-dots">
+                        <div class="ob-dot"></div>
+                        <div class="ob-dot"></div>
+                        <div class="ob-dot on"></div>
+                    </div>
+                    <button class="ob-btn" onclick="obDone()">
+                Начать обучение 🚀
+            </button>
+                </div>
+            </div>
+
+        </div>
+
+        <script>
+            function obGo(n) {
+                var slides = document.querySelectorAll('.ob-slide');
+                slides.forEach(function(s) {
+                    s.classList.remove('on');
+                });
+                var next = document.getElementById('s' + n);
+                if (next) next.classList.add('on');
+            }
+
+            function obDone() {
+                try {
+                    localStorage.setItem('bilimhub_onboarding_done', 'true');
+                } catch (e) {}
+                document.getElementById('onboarding').style.display = 'none';
+                var app = document.getElementById('app');
+                if (app) app.style.display = 'block';
+                if (typeof loadTeachers === 'function') loadTeachers();
+            }
+            // Check if already done
+            (function() {
+                try {
+                    if (localStorage.getItem('bilimhub_onboarding_done')) {
+                        document.getElementById('onboarding').style.display = 'none';
+                        var app = document.getElementById('app');
+                        if (app) app.style.display = 'block';
+                    }
+                } catch (e) {}
+            })();
+        </script>
+
+    </div>
+
+    <!-- MAIN APP -->
+    <div id="app" style="display:none">
+
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="brand">
+
+                    <div class="brand-text">
+                        <span class="brand-name">BilimHub</span>
+                        <span class="brand-tagline">Premium Education</span>
+                    </div>
+                </div>
+
+                <div class="header-actions">
+                    <button class="btn-register-teacher" onclick="openRegisterTeacher()">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                         <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                         <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
@@ -86,49 +555,49 @@
                     </svg>
                     <span>Стать преподавателем</span>
                 </button>
-                <button class="icon-btn" onclick="toggleChat()">
+                    <button class="icon-btn" onclick="toggleChat()">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                         <path d="M21 15C21 15.5304 20.7893 16.0391 20.4142 16.4142C20.0391 16.7893 19.5304 17 19 17H7L3 21V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
+                </div>
             </div>
-        </div>
-        
-        <!-- Filters -->
-        <div class="filters-container">
-            <div class="filters-scroll">
-                <button class="filter-chip active" onclick="filterTeachers('Все',this)" data-filter="all">
+
+            <!-- Filters -->
+            <div class="filters-container">
+                <div class="filters-scroll">
+                    <button class="filter-chip active" onclick="filterTeachers('Все',this)" data-filter="all">
                     <span>Все предметы</span>
                 </button>
-                <button class="filter-chip" onclick="filterTeachers('Математика',this)" data-filter="math">
+                    <button class="filter-chip" onclick="filterTeachers('Математика',this)" data-filter="math">
                     <span>Математика</span>
                 </button>
-                <button class="filter-chip" onclick="filterTeachers('Английский',this)" data-filter="english">
+                    <button class="filter-chip" onclick="filterTeachers('Английский',this)" data-filter="english">
                     <span>Английский</span>
                 </button>
-                <button class="filter-chip" onclick="filterTeachers('Физика',this)" data-filter="physics">
+                    <button class="filter-chip" onclick="filterTeachers('Физика',this)" data-filter="physics">
                     <span>Физика</span>
                 </button>
-                <button class="filter-chip" onclick="filterTeachers('Химия',this)" data-filter="chemistry">
+                    <button class="filter-chip" onclick="filterTeachers('Химия',this)" data-filter="chemistry">
                     <span>Химия</span>
                 </button>
-                <button class="filter-chip" onclick="filterTeachers('История',this)" data-filter="history">
+                    <button class="filter-chip" onclick="filterTeachers('История',this)" data-filter="history">
                     <span>История</span>
                 </button>
 
+                </div>
             </div>
-        </div>
-    </header>
+        </header>
 
-    <!-- Teachers Grid -->
-    <main class="main-content">
-        <div id="teachers-grid" class="teachers-grid">
-            <!-- Teachers will be loaded here -->
-        </div>
-    </main>
+        <!-- Teachers Grid -->
+        <main class="main-content">
+            <div id="teachers-grid" class="teachers-grid">
+                <!-- Teachers will be loaded here -->
+            </div>
+        </main>
 
-    <!-- AI Chat FAB -->
-    <button class="fab" onclick="toggleChat()" aria-label="Open AI Assistant">
+        <!-- AI Chat FAB -->
+        <button class="fab" onclick="toggleChat()" aria-label="Open AI Assistant">
         <div class="fab-icon">
             <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
                 <path d="M14 2C7.373 2 2 7.373 2 14C2 20.627 7.373 26 14 26C20.627 26 26 20.627 26 14C26 7.373 20.627 2 14 2Z" stroke="currentColor" stroke-width="2"/>
@@ -140,186 +609,157 @@
         <span class="fab-pulse"></span>
     </button>
 
-    <!-- Chat Modal -->
-    <div id="chat-modal" class="chat-modal">
-        <div class="chat-container">
-            <div class="chat-header">
-                <div class="chat-header-content">
-                    <div class="chat-avatar">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <!-- Chat Modal -->
+        <div id="chat-modal" class="chat-modal">
+            <div class="chat-container">
+                <div class="chat-header">
+                    <div class="chat-header-content">
+                        <div class="chat-avatar">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                             <circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.2"/>
                             <circle cx="9" cy="10" r="1.5" fill="currentColor"/>
                             <circle cx="15" cy="10" r="1.5" fill="currentColor"/>
                             <path d="M8 15C8 15 9.5 16.5 12 16.5C14.5 16.5 16 15 16 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                         </svg>
+                        </div>
+                        <div class="chat-info">
+                            <h3>AI Ассистент</h3>
+                            <span class="chat-status">
+                            <span class="status-dot"></span> Онлайн
+                            </span>
+                        </div>
                     </div>
-                    <div class="chat-info">
-                        <h3>AI Ассистент</h3>
-                        <span class="chat-status">
-                            <span class="status-dot"></span>
-                            Онлайн
-                        </span>
-                    </div>
-                </div>
-                <button class="chat-close" onclick="toggleChat()">
+                    <button class="chat-close" onclick="toggleChat()">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                         <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                     </svg>
                 </button>
-            </div>
-            
-            <div id="chat-messages" class="chat-messages">
-                <div class="chat-welcome">
-                    <div class="welcome-icon">👋</div>
-                    <h4>Здравствуйте!</h4>
-                    <p>Я помогу вам подобрать идеального наставника. Расскажите, чему хотите научиться?</p>
                 </div>
-            </div>
-            
-            <div class="chat-input-container">
-                <div class="chat-input-wrapper">
-                    <input 
-                        id="ai-input" 
-                        type="text"
-                        placeholder="Например: нужен репетитор по математике..."
-                        autocomplete="off"
-                    >
-                    <button class="send-btn" onclick="sendMessage()">
+
+                <div id="chat-messages" class="chat-messages">
+                    <div class="chat-welcome">
+                        <div class="welcome-icon">👋</div>
+                        <h4>Здравствуйте!</h4>
+                        <p>Я помогу вам подобрать идеального наставника. Расскажите, чему хотите научиться?</p>
+                    </div>
+                </div>
+
+                <div class="chat-input-container">
+                    <div class="chat-input-wrapper">
+                        <input id="ai-input" type="text" placeholder="Например: нужен репетитор по математике..." autocomplete="off">
+                        <button class="send-btn" onclick="sendMessage()">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                             <path d="M2 10L18 2L10 18L8 11L2 10Z" fill="currentColor"/>
                         </svg>
                     </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Teacher Registration Modal -->
-    <div id="register-teacher-modal" class="booking-modal">
-        <div class="booking-container">
-            <button class="booking-close" onclick="closeRegisterTeacher()">
+        <!-- Teacher Registration Modal -->
+        <div id="register-teacher-modal" class="booking-modal">
+            <div class="booking-container">
+                <button class="booking-close" onclick="closeRegisterTeacher()">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                     <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                 </svg>
             </button>
 
-            <div class="booking-content">
-                <div class="booking-header">
-                    <div class="register-teacher-icon">👨‍🏫</div>
-                    <h2>Стать преподавателем</h2>
-                    <p>Заполните анкету и мы свяжемся с вами</p>
-                </div>
-
-                <div class="booking-form">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="teacher-first-name">Имя</label>
-                            <input
-                                id="teacher-first-name"
-                                type="text"
-                                placeholder="Алихан"
-                                class="form-input"
-                            >
-                        </div>
-                        <div class="form-group">
-                            <label for="teacher-last-name">Фамилия</label>
-                            <input
-                                id="teacher-last-name"
-                                type="text"
-                                placeholder="Сейткали"
-                                class="form-input"
-                            >
-                        </div>
+                <div class="booking-content">
+                    <div class="booking-header">
+                        <div class="register-teacher-icon">👨‍🏫</div>
+                        <h2>Стать преподавателем</h2>
+                        <p>Заполните анкету и мы свяжемся с вами</p>
                     </div>
 
-                    <div class="form-group">
-                        <label for="teacher-subject">Предмет</label>
-                        <div class="select-wrapper">
-                            <select id="teacher-subject" class="form-input form-select">
+                    <div class="booking-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="teacher-first-name">Имя</label>
+                                <input id="teacher-first-name" type="text" placeholder="Алихан" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label for="teacher-last-name">Фамилия</label>
+                                <input id="teacher-last-name" type="text" placeholder="Сейткали" class="form-input">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="teacher-subject">Предмет</label>
+                            <div class="select-wrapper">
+                                <select id="teacher-subject" class="form-input form-select">
                                 <option value="" disabled selected>Выберите предмет</option>
                                 <option value="Математика">📐 Математика</option>
                                 <option value="Английский">🌐 Английский язык</option>
                                 <option value="Физика">⚛️ Физика</option>
                                 <option value="Химия">🧪 Химия</option>
                                 <option value="История">📜 История</option>
-
+                                 <option value="Қазақ Тілі">📚 Қазақ Тілі</option>
+                                  <option value="Русский Язык">📚 Русский Язык</option>
                             </select>
-                            <svg class="select-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                <svg class="select-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none">
                                 <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="teacher-phone">Номер телефона</label>
-                        <input
-                            id="teacher-phone"
-                            type="tel"
-                            placeholder="+7 (___) ___-__-__"
-                            class="form-input"
-                        >
-                    </div>
+                        <div class="form-group">
+                            <label for="teacher-phone">Номер телефона</label>
+                            <input id="teacher-phone" type="tel" placeholder="+7 (___) ___-__-__" class="form-input">
+                        </div>
 
-                    <button class="btn-submit" onclick="submitRegisterTeacher()">
+                        <button class="btn-submit" onclick="submitRegisterTeacher()">
                         <span>Отправить анкету</span>
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                             <path d="M7 3L14 10L7 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                         </svg>
                     </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Booking Modal -->
-    <div id="booking-modal" class="booking-modal">
-        <div class="booking-container">
-            <button class="booking-close" onclick="closeBooking()">
+        <!-- Booking Modal -->
+        <div id="booking-modal" class="booking-modal">
+            <div class="booking-container">
+                <button class="booking-close" onclick="closeBooking()">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                     <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                 </svg>
             </button>
-            
-            <div class="booking-content">
-                <div class="booking-header">
-                    <h2>Запись на занятие</h2>
-                    <p id="booking-teacher-name">Выберите удобное время</p>
-                </div>
-                
-                <div class="booking-form">
-                    <div class="form-group">
-                        <label for="user-name-input">Ваше имя</label>
-                        <input 
-                            id="user-name-input" 
-                            type="text" 
-                            placeholder="Введите ваше имя"
-                            class="form-input"
-                        >
+
+                <div class="booking-content">
+                    <div class="booking-header">
+                        <h2>Запись на занятие</h2>
+                        <p id="booking-teacher-name">Выберите удобное время</p>
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="user-phone">Номер телефона</label>
-                        <input 
-                            id="user-phone" 
-                            type="tel" 
-                            placeholder="+7 (___) ___-__-__"
-                            class="form-input"
-                        >
-                    </div>
-                    
-                    <button class="btn-submit" onclick="submitBooking()">
+
+                    <div class="booking-form">
+                        <div class="form-group">
+                            <label for="user-name-input">Ваше имя</label>
+                            <input id="user-name-input" type="text" placeholder="Введите ваше имя" class="form-input">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="user-phone">Номер телефона</label>
+                            <input id="user-phone" type="tel" placeholder="+7 (___) ___-__-__" class="form-input">
+                        </div>
+
+                        <button class="btn-submit" onclick="submitBooking()">
                         <span>Отправить заявку</span>
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                             <path d="M7 3L14 10L7 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                         </svg>
                     </button>
+                    </div>
                 </div>
             </div>
         </div>
+
     </div>
 
-</div>
-
-<script src="app.js"></script>
+    <script src="app.js"></script>
 </body>
+
 </html>
